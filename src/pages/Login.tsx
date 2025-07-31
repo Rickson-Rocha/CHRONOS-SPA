@@ -1,4 +1,4 @@
-// src/pages/manager/Login.tsx
+
 
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, Alert} from 'antd';
@@ -40,7 +40,6 @@ const Login: React.FC = () => {
     setError(null);
     try {
       await login(values);
-      // O redirecionamento já é feito dentro do `login` no AuthContext
     } catch (err: any) {
       setError(err.message || 'Ocorreu um erro. Tente novamente.');
     } finally {
@@ -53,7 +52,7 @@ const Login: React.FC = () => {
       <Card style={styles.card}>
         <div style={styles.logoContainer}>
           <img src={logo} alt="Logo" style={styles.logo} />
-          <Title level={3}>Sistema de Ponto</Title>
+          <Title level={3}>Chronos Sistema de Ponto</Title>
         </div>
 
         <Form
