@@ -12,7 +12,6 @@ const { Title, Text } = Typography;
 
 
 const getStatusConfig = (status: string) => {
-    console.log("FUNÇÃO getStatusConfig FOI CHAMADA COM O STATUS:", status);
     switch (status) {
         case 'COMPLETED':
             return { color: 'green', text: 'Jornada Completa', icon: <CheckCircleOutlined /> };
@@ -42,7 +41,8 @@ export default function EmployeeDetailsPage() {
         setLoading(true);
         try {
             const dateString = dateToFetch.format('YYYY-MM-DD');
-            const data = await apiService.getEmployeeDetailsByDate(Number(id), dateString);
+    
+            const data = await apiService.getEmployeeDetails(Number(id)); 
             setDetails(data);
             setError(null);
         } catch (err: any) {
@@ -54,7 +54,6 @@ export default function EmployeeDetailsPage() {
     };
 
     useEffect(() => {
-        
         fetchDetails(selectedDate);
     }, [id]);
 
@@ -84,7 +83,6 @@ export default function EmployeeDetailsPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6">
                 
-             
                 <aside className="lg:col-span-1 space-y-6">
                     <Card>
                         <div className="flex flex-col items-center text-center p-4">
@@ -92,7 +90,7 @@ export default function EmployeeDetailsPage() {
                             <Title level={4}>{details?.user.name}</Title>
                             <Text type="secondary">{details?.user.email}</Text>
                             <Tag color={details?.user.role === 'ROLE_MANAGER' ? 'cyan' : 'geekblue'} className="mt-2">
-                                {details?.user.role.replace('ROLE_', '').toLowerCase()}
+                                {details?.user.role === 'ROLE_MANAGER' ? 'Gerente' : 'Colaborador'}
                             </Tag>
                         </div>
                         <Descriptions layout="vertical" bordered column={1} size="small" className="mt-4">
@@ -104,7 +102,6 @@ export default function EmployeeDetailsPage() {
                     </Card>
                 </aside>
 
-               
                 <main className="lg:col-span-2 space-y-6">
                     <Card>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
@@ -137,7 +134,7 @@ export default function EmployeeDetailsPage() {
                             dataSource={details?.summary?.timeEntries || []}
                             renderItem={(isoString: string, index: number) => {
                                 const date = new Date(isoString);
-                                const formattedTime = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+                                const formattedTime = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                                 const isEntry = index % 2 === 0;
                                 const icon = isEntry ? <LoginOutlined className="text-green-600" /> : <LogoutOutlined className="text-red-600" />;
                                 const label = isEntry ? "Entrada" : "Saída";
